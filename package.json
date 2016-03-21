@@ -1,0 +1,18 @@
+{
+  "name": "webby-grove-demo",
+  "version": "0.0.1",
+  "description": "Messenger Bot plugin to control LED by potentio Meter",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "webbybot"
+  ],
+  "author": "Webby Team",
+  "license": "MIT",
+  "dependencies": {
+    "node-grovepi": "^2.0.7",
+    "verbal-expressions": "^0.2.1"
+  }
+}
