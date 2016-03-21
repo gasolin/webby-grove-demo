@@ -11,6 +11,7 @@ var board;
 var potentiometer_pin = 2;
 var led_pin = 5;
 
+var led_prev_level = 0;
 var led_level = 0;
 
 function start() {
@@ -33,9 +34,12 @@ function start() {
         });
         */
         potentioMeter.on('change', function(res) {
-          //console.log('led level:' + res);
           led_level = res / 4;
-          ledSensor.write(led_level);
+          if (led_prev_level > led_level + 5 || led_prev_level < led_level - 5) {
+            console.log('change led level:' + res);
+            led_prev_level = led_level;
+            ledSensor.write(led_level);
+          }
         });
         potentioMeter.watch();
 
@@ -58,19 +62,28 @@ function onExit(err) {
   }
 }
 
-//start();
+start();
 // catch ctrl + c event
 //process.on('SIGINT', onExit);
 
 
-var pattern = verEx().then('led ').range('0', '9').endOfLine();
+var pattern = verEx().then('led ').find(verEx().range('0', '9')).endOfLine();
 console.log('>>>>>>' + pattern);
-///(led) ([1-9]*)$/i
+///(led) (\\d+)/i
 
 module.exports = function(robot) {
-  robot.respond(pattern, function(res) {
-    var level = Max(res.match[2], 1023) / 4;
+  robot.respond(/led\s(\d+)/i, function(res) {
+    var level = Math.min(res.match[1], 1020) / 4;
     console.log('got led level ' + level);
-    res.send('set light level to' + level);
+    res.send('set light level to ' + level);
+  });
+
+  robot.respond(/led\son/i, function(res) {
+    res.send('light is on');
+  });
+
+  robot.respond(/led\soff/i, function(res) {
+    console.log('got led level ' + 0);
+    res.send('light is off');
   });
 }
