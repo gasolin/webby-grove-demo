@@ -10,16 +10,16 @@ var analogSensor = grovePi.sensors.base.Analog;
 
 var verEx = require('verbal-expressions');
 
-const boardEvent = new EventEmitter();
+var boardEvent = new EventEmitter();
 
-const potentiometerPin = 2;
-const ledPin = 5;
+var potentiometerPin = 2;
+var ledPin = 5;
 
-const ledSensor = new analogSensor(ledPin);
-const potentioMeter = new analogSensor(potentiometerPin);
+var ledSensor = new analogSensor(ledPin);
+var potentioMeter = new analogSensor(potentiometerPin);
 
-let ledPrevLevel = 0;
-let ledLevel = 0;
+var ledPrevLevel = 0;
+var ledLevel = 0;
 
 potentioMeter.on('change', function(res) {
   ledLevel = res / 4;
@@ -31,7 +31,7 @@ potentioMeter.on('change', function(res) {
   }
 });
 
-const board = new Board({
+var board = new Board({
   debug: true,
   onError: function(err) {
     boardEvent.emit('error', err); 
