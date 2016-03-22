@@ -1,5 +1,28 @@
 # webby-grove-demo
-This project's goal is to demostrate control devices via messengers.
+This project's goal is to demostrate control devices via messengers via [Webby](https://github.com/gasolin/webbybot).
+
+## Usage
+
+* Check status
+```
+led
+> LED is off
+```
+
+* Change state
+```
+led on
+> LED is on(255)
+led off
+> LED is off
+```
+* Set value
+```
+> led 800
+> set LED level to 200
+> led
+> LED is on(200)
+```
 
 ## Prerequisite
 
