@@ -1,5 +1,7 @@
 # webby-grove-demo
-This project's goal is to demostrate control devices via messengers via [Webby](https://github.com/gasolin/webbybot).
+This project's goal is to validate and demostrate we can control devices by [Webby](https://github.com/gasolin/webbybot) via some messengers.
+
+Now tested on Telegram and Facebook messenger.
 
 ## Usage
 
