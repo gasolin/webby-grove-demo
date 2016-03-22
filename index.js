@@ -2,22 +2,17 @@
 
 var EventEmitter = require('events').EventEmitter;
 var grovePi = require('node-grovepi').GrovePi;
-var Commands = grovePi.commands;
 var Board = grovePi.board;
-
-//var digitalSensor = grovePi.sensors.base.Digital;
 var analogSensor = grovePi.sensors.base.Analog;
-
-var verEx = require('verbal-expressions');
-
 var boardEvent = new EventEmitter();
 
+// device pins
 var potentiometerPin = 2;
 var ledPin = 5;
-
+// declare devices
 var ledSensor = new analogSensor(ledPin);
 var potentioMeter = new analogSensor(potentiometerPin);
-
+// cache current led state
 var ledPrevLevel = 0;
 var ledLevel = 0;
 
@@ -52,10 +47,12 @@ boardEvent.on('init', function() {
 
 board.init();
 
-var pattern = verEx().then('led ').find(verEx().range('0', '9')).endOfLine();
-console.log('>>>>>>' + pattern);
-///(led) (\\d+)/i
+function setLEDLevel(val) {
+  ledSensor.write(val);
+  ledLevel = val;  
+}
 
+// bot responses
 module.exports = function(robot) {
   robot.respond(/led$/i, function(res) {
     if (!board.checkStatus()) {
@@ -74,8 +71,7 @@ module.exports = function(robot) {
     var level = Math.min(res.match[1], 1020) / 4;
     console.log('set led level ' + level);
 
-    ledSensor.write(level);
-    ledLevel = level;
+    setLEDLevel(level);
     res.send('set LED level to ' + level);
   });
 
@@ -85,8 +81,7 @@ module.exports = function(robot) {
     }
 
 
-    ledSensor.write(255);
-    ledLevel = 255;
+    setLEDLevel(255);
     res.send('LED is on');
   });
 
@@ -94,9 +89,8 @@ module.exports = function(robot) {
     if (!board.checkStatus()) {
       return res.send('Board is unaviliable'); 
     }
-    console.log('got led level ' + 0);
-    ledSensor.write(0);
-    ledLevel = 0;
+    console.log('set led level ' + 0);
+    setLEDLevel(0);
     res.send('LED is off');
   });
 };
