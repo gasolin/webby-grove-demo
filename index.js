@@ -7,16 +7,16 @@ var analogSensor = grovePi.sensors.base.Analog;
 var boardEvent = new EventEmitter();
 
 // device pins
-var potentiometerPin = 2;
+var roteryPin = 2;
 var ledPin = 5;
 // declare devices
 var ledSensor = new analogSensor(ledPin);
-var potentioMeter = new analogSensor(potentiometerPin);
+var roterySensor = new analogSensor(roteryPin);
 // cache current led state
 var ledPrevLevel = 0;
 var ledLevel = 0;
 
-potentioMeter.on('change', function(res) {
+roterySensor.on('change', function(res) {
   ledLevel = Math.min(res, 1020) / 4;
 
   if (ledPrevLevel > ledLevel + 5 || ledPrevLevel < ledLevel - 5) {
@@ -42,7 +42,7 @@ var board = new Board({
 
 
 boardEvent.on('init', function() {
-  potentioMeter.watch();
+  roterySensor.watch();
 });
 
 board.init();
@@ -61,7 +61,7 @@ module.exports = function(robot) {
     console.log('got led level ' + ledLevel);
     var status = ledLevel > 5 ? 'on(' + ledLevel + ')' : 'off';
 
-    res.send('light is ' + status);
+    res.send('LED is ' + status);
   });
 
   robot.respond(/led\s(\d+)/i, function(res) {
