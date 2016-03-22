@@ -3,6 +3,8 @@ This project's goal is to demostrate control devices via messengers via [Webby](
 
 ## Usage
 
+* Rotate rotery angle sensor to control LED's light level
+
 * Check status
 ```
 led
