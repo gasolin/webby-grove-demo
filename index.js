@@ -1,3 +1,6 @@
+'use strict';
+
+var EventEmitter = require('events').EventEmitter;
 var grovePi = require('node-grovepi').GrovePi;
 var Commands = grovePi.commands;
 var Board = grovePi.board;
@@ -7,65 +10,47 @@ var analogSensor = grovePi.sensors.base.Analog;
 
 var verEx = require('verbal-expressions');
 
-var board;
-var potentiometer_pin = 2;
-var led_pin = 5;
+const boardEvent = new EventEmitter();
 
-var led_prev_level = 0;
-var led_level = 0;
+const potentiometerPin = 2;
+const ledPin = 5;
 
-function start() {
-  console.log('starting');
-  board = new Board({
-    debug: true,
-    onError: function(err) {
-      console.log('TEST ERROR');
-      console.log(err);
-    },
-    onInit: function(res) {
-      if (res) {
-        var ledSensor = new analogSensor(led_pin);
-        var potentioMeter = new analogSensor(potentiometer_pin);
+const ledSensor = new analogSensor(ledPin);
+const potentioMeter = new analogSensor(potentiometerPin);
 
-        console.log('GrovePi version::' + board.version());
-        /*
-        potentioMeter.stream(1000, function(res) {
-          console.log('pm:' + res);
-        });
-        */
-        potentioMeter.on('change', function(res) {
-          led_level = res / 4;
-          if (led_prev_level > led_level + 5 || led_prev_level < led_level - 5) {
-            console.log('change led level:' + res);
-            led_prev_level = led_level;
-            ledSensor.write(led_level);
-          }
-        });
-        potentioMeter.watch();
+let ledPrevLevel = 0;
+let ledLevel = 0;
 
-        
-      } else {
-        console.log('TEST CANNOT START');
-      }
-    }
-  });
-  board.init();
-}
+potentioMeter.on('change', function(res) {
+  ledLevel = res / 4;
 
-function onExit(err) {
-  console.log('ending');
-  board.close();
-  process.removeAllListeners();
-  process.exit();
-  if (typeof err !== 'undefined') {
-    console.log(err);
+  if (ledPrevLevel > ledLevel + 5 || ledPrevLevel < ledLevel - 5) {
+    ledPrevLevel = ledLevel;
+
+    ledSensor.write(ledLevel);
   }
-}
+});
 
-start();
-// catch ctrl + c event
-//process.on('SIGINT', onExit);
+const board = new Board({
+  debug: true,
+  onError: function(err) {
+    boardEvent.emit('error', err); 
+  },
+  onInit: function(res) {
+    if (!res) {
+      boardEvent.emit('error', 'Can not init Board');
+    } 
 
+    boardEvent.emit('init');
+  }
+});
+
+
+boardEvent.on('init', function() {
+  potentioMeter.watch();
+});
+
+board.init();
 
 var pattern = verEx().then('led ').find(verEx().range('0', '9')).endOfLine();
 console.log('>>>>>>' + pattern);
@@ -79,11 +64,21 @@ module.exports = function(robot) {
   });
 
   robot.respond(/led\son/i, function(res) {
+    if (!board.checkStatus()) {
+      return res.send('Board is unaviliable'); 
+    }
+
+    ledSensor.write(255);
     res.send('light is on');
   });
 
   robot.respond(/led\soff/i, function(res) {
+    if (!board.checkStatus()) {
+      return res.send('Board is unaviliable'); 
+    }
+
     console.log('got led level ' + 0);
+    ledSensor.write(0);
     res.send('light is off');
   });
-}
+};
