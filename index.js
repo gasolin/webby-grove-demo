@@ -22,7 +22,7 @@ var ledPrevLevel = 0;
 var ledLevel = 0;
 
 potentioMeter.on('change', function(res) {
-  ledLevel = res / 4;
+  ledLevel = Math.min(res, 1020) / 4;
 
   if (ledPrevLevel > ledLevel + 5 || ledPrevLevel < ledLevel - 5) {
     ledPrevLevel = ledLevel;
@@ -57,10 +57,26 @@ console.log('>>>>>>' + pattern);
 ///(led) (\\d+)/i
 
 module.exports = function(robot) {
+  robot.respond(/led$/i, function(res) {
+    if (!board.checkStatus()) {
+      return res.send('Board is unaviliable'); 
+    }
+    console.log('got led level ' + ledLevel);
+    var status = ledLevel > 5 ? 'on(' + ledLevel + ')' : 'off';
+
+    res.send('light is ' + status);
+  });
+
   robot.respond(/led\s(\d+)/i, function(res) {
+    if (!board.checkStatus()) {
+      return res.send('Board is unaviliable'); 
+    }
     var level = Math.min(res.match[1], 1020) / 4;
-    console.log('got led level ' + level);
-    res.send('set light level to ' + level);
+    console.log('set led level ' + level);
+
+    ledSensor.write(level);
+    ledLevel = level;
+    res.send('set LED level to ' + level);
   });
 
   robot.respond(/led\son/i, function(res) {
@@ -68,17 +84,19 @@ module.exports = function(robot) {
       return res.send('Board is unaviliable'); 
     }
 
+
     ledSensor.write(255);
-    res.send('light is on');
+    ledLevel = 255;
+    res.send('LED is on');
   });
 
   robot.respond(/led\soff/i, function(res) {
     if (!board.checkStatus()) {
       return res.send('Board is unaviliable'); 
     }
-
     console.log('got led level ' + 0);
     ledSensor.write(0);
-    res.send('light is off');
+    ledLevel = 0;
+    res.send('LED is off');
   });
 };
