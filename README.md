@@ -39,9 +39,9 @@ led off
 ![grovepi](http://www.seeedstudio.com/depot/includes/templates/bootstrap/images/grove/grovepi2.jpg)
 
 * Grove sensors:
-[Green LED](http://www.seeedstudio.com/depot/Grove-LED-p-767.html)
+[Green LED](http://www.seeedstudio.com/depot/Grove-Green-LED-p-1144.html)
 
-![LED](http://www.seeedstudio.com/depot/bmz_cache/7/7cd71e5269f93b835845def2df26b7f0.image.530x397.jpg)
+![LED](http://www.seeedstudio.com/depot/bmz_cache/f/f27040ee3d12783bbf6490a99ca1512e.image.530x397.jpg)
 
 [Rotery angle sensor](http://www.seeedstudio.com/depot/grove-rotary-angle-sensor-p-770.html)
 
