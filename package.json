@@ -14,5 +14,8 @@
   "dependencies": {
     "node-grovepi": "^2.0.7",
     "verbal-expressions": "^0.2.1"
+  },
+  "peerDependencies": {
+    "webbybot": ">=0.2.2"
   }
 }
