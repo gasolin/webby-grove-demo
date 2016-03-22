@@ -1,4 +1,7 @@
 # webby-grove-demo
+
+[![npm](https://img.shields.io/npm/v/webby-grove-demo.svg)](https://www.npmjs.com/package/webby-grove-demo)
+
 This project's goal is to validate and demostrate we can control devices by [Webby](https://github.com/gasolin/webbybot) via some messengers.
 
 Now tested on Telegram and Facebook messenger.
