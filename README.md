@@ -62,7 +62,7 @@ Then you need clone [webby_template](https://github.com/gasolin/webby_template) 
 $ git clone https://github.com/gasolin/webby_template.git demo
 $ cd demo
 ```
-Then you have to get this project and install a messenger adapter from npm
+Then you have to get this project and install a messenger adapter from npm. (Let's take [telegram adapter](https://github.com/lukefx/hubot-telegram) for example. I've test it with [Facebook messenger](https://github.com/kimberli/hubot-messenger) as well, so you can try on it in the same manner)
 
 ```bash
 $ npm install --save hubot-telegram webby-grove-demo
