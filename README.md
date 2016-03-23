@@ -54,6 +54,8 @@ led off
 
 ## Setup Hardware
 
+![Imgur](http://i.imgur.com/lCTJ4BW.jpg)
+
 Connect GrovePi+ and Respberry Pi together.
 Plug Rotery angle sensor in pin `A2`, Plug Green LED in pin `D5` on GrovePi+ board.
 
