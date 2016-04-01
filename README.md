@@ -61,6 +61,8 @@ Plug Rotery angle sensor in pin `A2`, Plug Green LED in pin `D5` on GrovePi+ boa
 
 ## Setup Software
 
+You need a 4G Micro SD Card and [flash with linux image](https://www.raspberrypi.org/documentation/installation/installing-images/)
+
 You need to make GrovePi works first by following this [instructions](http://www.dexterindustries.com/GrovePi/get-started-with-the-grovepi/setting-software/).
 
 Then you need clone [webby_template](https://github.com/gasolin/webby_template) which provide the basic setup of chatbot framework.
